@@ -1,6 +1,6 @@
-import { LogItem } from '../../entity/LogItem'
-import { DomainException } from '../exception/DomainException'
-import { SaveLogs } from './SaveLogs'
+import { LogItem } from '../../entity/log-item'
+import { DomainException } from '../exception/domain-exception'
+import { SaveLogs } from './save-logs'
 
 describe('Save Logs use case', () => {
   const logGateway = {

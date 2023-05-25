@@ -1,4 +1,4 @@
-import { Payload } from './Payload'
+import { Payload } from './payload'
 
 export class LogItem {
   constructor(

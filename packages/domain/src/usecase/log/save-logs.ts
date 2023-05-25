@@ -1,6 +1,6 @@
-import { LogItem } from '../../entity/LogItem'
-import { LogGateway } from '../../port/LogGateway'
-import { DomainException } from '../exception/DomainException'
+import { LogItem } from '../../entity/log-item'
+import { LogGateway } from '../../port/log-gateway'
+import { DomainException } from '../exception/domain-exception'
 
 export class SaveLogs<T extends Iterable<LogItem>, U, V> {
   constructor(private readonly logGateway: LogGateway<T, U, V>) {}

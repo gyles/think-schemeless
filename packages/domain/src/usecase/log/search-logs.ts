@@ -1,5 +1,5 @@
-import { LogItem } from '../../entity/LogItem'
-import { LogGateway } from '../../port/LogGateway'
+import { LogItem } from '../../entity/log-item'
+import { LogGateway } from '../../port/log-gateway'
 
 export class SearchLogs<T extends Iterable<LogItem>, U, V> {
   constructor(private readonly logGateway: LogGateway<T, U, V>) {}
