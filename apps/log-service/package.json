@@ -1,5 +1,5 @@
 {
-  "name": "@think/service-log",
+  "name": "@think/log-service",
   "version": "0.0.1",
   "description": "Log service using NestJS backend",
   "private": true,
