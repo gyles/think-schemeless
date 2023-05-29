@@ -5,6 +5,7 @@
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
+    "bootstrap": "pnpm migrate:run",
     "build": "nest build",
     "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

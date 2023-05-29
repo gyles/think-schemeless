@@ -6,6 +6,7 @@
   "author": "Gyles Polloso <gyles.polloso@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
+    "bootstrap": "docker compose up -d && pnpm --filter \"./apps/**\" bootstrap",
     "build": "pnpm run --parallel build",
     "clean": "pnpm run --parallel clean",
     "format": "pnpm run --parallel format",
