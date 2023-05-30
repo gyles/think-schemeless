@@ -1,14 +1,13 @@
-import { LogItem } from '../../entity/log-item'
 import { LogGateway } from '../../port/log-gateway'
 
-export class SearchLogs<T extends Iterable<LogItem>, U, V> {
-  constructor(private readonly logGateway: LogGateway<T, U, V>) {}
+export class SearchLogs<Request, Filter> {
+  constructor(private readonly logGateway: LogGateway<Request, Filter>) {}
 
   public searchLogById(id: string) {
     return this.logGateway.getLogById(id)
   }
 
-  public searchByQuery(request: U, query: V) {
+  public searchByQuery(request: Request, query: Filter) {
     return this.logGateway.getLogs(request, query)
   }
 }

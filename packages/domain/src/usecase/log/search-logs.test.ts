@@ -26,7 +26,7 @@ describe('Search Logs use case', () => {
       )
       logGateway.getLogById.mockReturnValueOnce(log)
 
-      const useCase = new SearchLogs<Array<LogItem>, string, string>(logGateway)
+      const useCase = new SearchLogs<string, string>(logGateway)
       const result = useCase.searchLogById(log.id)
 
       expect(logGateway.getLogById).toBeCalledWith(log.id)
@@ -56,7 +56,7 @@ describe('Search Logs use case', () => {
       ]
       logGateway.getLogs.mockReturnValueOnce(logs)
 
-      const useCase = new SearchLogs<Array<LogItem>, string, string>(logGateway)
+      const useCase = new SearchLogs<string, string>(logGateway)
       const result = useCase.searchByQuery(
         'request',
         'userId==5087d5bf-4f78-413b-b700-620a24306d56',

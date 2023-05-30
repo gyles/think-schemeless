@@ -1,7 +1,4 @@
 import { LogItem } from '../entity/log-item'
+import { Gateway } from './gateway'
 
-export interface LogGateway<T extends Iterable<LogItem>, U, V> {
-  getLogById(id: string): LogItem
-  getLogs(request: U, filter: V): T
-  saveLogs(logs: Array<LogItem>): void
-}
+export type LogGateway<Request, Filter> = Gateway<LogItem, Request, Filter>

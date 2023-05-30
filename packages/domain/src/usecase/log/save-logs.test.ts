@@ -17,14 +17,14 @@ describe('Save Logs use case', () => {
 
   describe('saveLogs', () => {
     it('should throw domain exception when saving logs given no log item', () => {
-      const useCase = new SaveLogs<Array<LogItem>, string, string>(logGateway)
+      const useCase = new SaveLogs<string, string>(logGateway)
 
       expect(() => useCase.saveLogs([])).toThrow(DomainException)
       expect(() => useCase.saveLogs([])).toThrow('Cannot save empty logs.')
     })
 
     it('should allow save when saving logs given log items', () => {
-      const useCase = new SaveLogs<Array<LogItem>, string, string>(logGateway)
+      const useCase = new SaveLogs<string, string>(logGateway)
 
       const logs = [
         new LogItem(
