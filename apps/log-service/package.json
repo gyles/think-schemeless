@@ -19,8 +19,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate:generate": "pnpm build && typeorm migration:generate -d dist/repository/projection.js",
-    "migrate:run": "pnpm build && typeorm migration:run -d dist/repository/projection.js"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/repository/projection.ts",
+    "migrate:generate": "pnpm typeorm migration:generate",
+    "migrate:run": "pnpm typeorm migration:run"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

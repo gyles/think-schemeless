@@ -29,7 +29,7 @@ export const config: Config = {
       dropSchema: !!process.env['EVENT_STORE_DROP_SCHEMA'],
       synchronize: !!process.env['EVENT_STORE_SYNCHRONIZE'],
       migrations: [__dirname + '/migrations/*.{ts,js}'],
-      entities: [__dirname + '/repository/entity/*.entity.{ts,js}'],
+      entities: [__dirname + '/**/*.entity.{ts,js}'],
     },
   },
 }
