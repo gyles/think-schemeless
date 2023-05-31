@@ -1,7 +1,12 @@
-import { DataSource } from 'typeorm'
-import { config } from '../config'
+import { configuration } from '../configuration'
+import { EventStoreRepo } from '@schemeless/event-store-adapter-typeorm'
 
-export class EventStore extends DataSource {}
-const eventStore = new EventStore(config.dataSource.eventStore)
+const initEventStore = async () => {
+  const eventStoreRepository = new EventStoreRepo(
+    configuration.dataSource.eventStore as never,
+  )
+  await eventStoreRepository.init()
+  eventStoreRepository.conn.synchronize(true)
+}
 
-export default eventStore
+initEventStore()

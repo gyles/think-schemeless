@@ -1,6 +1,6 @@
 import { DataSourceOptions } from 'typeorm'
 
-export type Config = {
+export type Configuration = {
   port: number
   env: string
   dataSource: {
@@ -9,7 +9,7 @@ export type Config = {
   }
 }
 
-export const config: Config = {
+export const configuration: Configuration = {
   port: parseInt(process.env['PORT']) || 3000,
   env: process.env['NODE_ENV'] || 'development',
   dataSource: {
@@ -33,3 +33,5 @@ export const config: Config = {
     },
   },
 }
+
+export default () => configuration

@@ -1,10 +1,17 @@
 import { Module } from '@nestjs/common'
-import { config } from './config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LogModule } from './log/log.module'
+import configuration from './configuration'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config.dataSource.projection), LogModule],
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+    TypeOrmModule.forRoot(configuration().dataSource.projection),
+    LogModule,
+  ],
   controllers: [],
   providers: [],
 })

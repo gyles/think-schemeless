@@ -1,8 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { LogGateway, LogItem } from 'packages/domain/dist'
+import { Inject, Injectable, Logger } from '@nestjs/common'
+import { LogGateway, LogItem } from '@think/think-schemeless-domain'
 import { Repository } from 'typeorm'
 import { LogItemEntity } from './entities/log-item.entity'
 import { InjectRepository } from '@nestjs/typeorm'
+import { LogSavedEventFlow } from './events/log-saved.event-flow'
+import { EventStore } from '@schemeless/event-store'
+import { v4 } from 'uuid'
 
 @Injectable()
 export class LogRepository implements LogGateway<unknown, unknown> {
@@ -10,6 +13,8 @@ export class LogRepository implements LogGateway<unknown, unknown> {
   constructor(
     @InjectRepository(LogItemEntity)
     private readonly repository: Repository<LogItemEntity>,
+    @Inject('LogEventStore')
+    private readonly eventStore: EventStore,
   ) {}
 
   async getLogById(id: string): Promise<LogItem> {
@@ -21,6 +26,9 @@ export class LogRepository implements LogGateway<unknown, unknown> {
   }
 
   async saveLogs(logs: LogItem[]): Promise<void> {
-    throw new Error('Method not implemented.')
+    await LogSavedEventFlow.receive(this.eventStore)({
+      identifier: v4(),
+      payload: logs,
+    })
   }
 }

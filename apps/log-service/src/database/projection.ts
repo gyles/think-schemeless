@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm'
-import { config } from '../config'
+import { configuration } from '../configuration'
 
-export class Projection extends DataSource {}
-const projection = new Projection(config.dataSource.projection)
+const projection = new DataSource(configuration.dataSource.projection)
 
 export default projection

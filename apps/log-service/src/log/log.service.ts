@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { LogItem, SaveLogs, SearchLogs } from '@think/think-schemeless-domain'
+import { v4 } from 'uuid'
 
 @Injectable()
 export class LogService {
@@ -17,7 +18,9 @@ export class LogService {
     return this.searchUseCase.searchByQuery(undefined, undefined)
   }
 
-  async saveLogs(logs: LogItem[]) {
-    return this.saveUseCase.saveLogs(logs)
+  async saveLogs(logs: Omit<LogItem, 'id' | 'created'>[]) {
+    return this.saveUseCase.saveLogs(
+      logs.map((log) => ({ id: v4(), created: new Date(), ...log })),
+    )
   }
 }

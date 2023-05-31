@@ -2,10 +2,9 @@
   "name": "@think/log-service",
   "version": "0.0.1",
   "description": "Log service using NestJS backend",
-  "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "bootstrap": "pnpm migrate:run",
+    "bootstrap": "pnpm event-store:init && pnpm projection:migrate:run",
     "build": "nest build",
     "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -19,12 +18,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/database/projection.ts",
-    "migrate:generate": "pnpm typeorm migration:generate",
-    "migrate:run": "pnpm typeorm migration:run"
+    "typeorm:projection": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/database/projection.ts",
+    "projection:migrate:generate": "pnpm typeorm:projection migration:generate",
+    "projection:migrate:run": "pnpm typeorm:projection migration:run",
+    "event-store:init": "ts-node -r tsconfig-paths/register src/database/event-store.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
@@ -35,7 +36,8 @@
     "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.16"
+    "typeorm": "^0.3.16",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -45,6 +47,7 @@
     "@types/jest": "29.5.1",
     "@types/node": "18.16.12",
     "@types/supertest": "^2.0.11",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "dotenv": "^16.0.3",

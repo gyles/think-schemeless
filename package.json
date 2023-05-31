@@ -9,7 +9,9 @@
     "bootstrap": "docker compose up -d && pnpm --filter \"./apps/**\" bootstrap",
     "build": "pnpm run --parallel build",
     "clean": "pnpm run --parallel clean",
+    "destroy": "docker compose down -v",
     "format": "pnpm run --parallel format",
+    "start": "pnpm --filter \"./apps/**\" start",
     "test": "pnpm run --parallel test"
   },
   "devDependencies": {
