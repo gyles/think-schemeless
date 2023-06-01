@@ -1,16 +1,16 @@
-import { Module } from '@nestjs/common'
-import { LogRepository } from './log.repository'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { Logger, Module } from '@nestjs/common'
 import { SaveLogs, SearchLogs } from '@think/think-schemeless-domain'
-import { EventStoreRepo } from '@schemeless/event-store-adapter-typeorm'
-import { makeEventStore } from '@schemeless/event-store'
-import { LogItemEntity } from './entities/log-item.entity'
-import { PayloadEntity } from './entities/payload.entity'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { LogRepository } from './log.repository'
 import { LogController } from './log.controller'
 import { LogService } from './log.service'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { eventFlows } from './events'
-import { observers } from './observers'
+import { LogSavedEventFlow } from './events/log-saved.event-flow'
+import { LogItemEntity } from './entities/log-item.entity'
+import { PayloadEntity } from './entities/payload.entity'
+import { EventStoreRepo } from '@schemeless/event-store-adapter-typeorm'
+import { EventFlow, makeEventStore } from '@schemeless/event-store'
+import { LogEventFlows, LogEventStore } from './injectables'
 
 @Module({
   imports: [
@@ -21,24 +21,37 @@ import { observers } from './observers'
   providers: [
     LogRepository,
     LogService,
+    LogSavedEventFlow,
+    // events
     {
-      provide: 'LogEventStore',
-      useFactory: async (configService: ConfigService) => {
+      provide: LogEventFlows,
+      useFactory: (saved: LogSavedEventFlow) => [saved],
+      inject: [LogSavedEventFlow],
+    },
+    // event store
+    {
+      provide: LogEventStore,
+      useFactory: async (
+        configService: ConfigService,
+        eventFlows: EventFlow[],
+      ) => {
+        const logger = new Logger(LogModule.name)
         const eventStoreRepository = new EventStoreRepo(
           configService.get('dataSource.eventStore'),
         )
         await eventStoreRepository.init()
         const eventStore = await makeEventStore(eventStoreRepository)(
           eventFlows,
-          observers,
+          [],
         )
-        eventStore.output$.subscribe(() => {
-          // do nothing
+        eventStore.output$.subscribe((output) => {
+          if (output.error) logger.warn(output.error)
+          logger.log(`EventStore: ${output.state}`)
         })
 
         return eventStore
       },
-      inject: [ConfigService],
+      inject: [ConfigService, LogEventFlows],
     },
     // use cases
     {
